@@ -1,6 +1,7 @@
 import createPrompt from './promptGenerator.js';
 import express from 'express';
 import cron from 'node-cron';
+import cors from 'cors';
 const app = express();
 
 let prompt = '';
@@ -24,6 +25,7 @@ router.get('/', async (req, res) => {
   res.send(prompt);
 });
 
+app.use(cors());
 app.use(router);
 
 app.listen(3000, () => {
