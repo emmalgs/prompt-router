@@ -28,4 +28,4 @@ const createPrompt = async () => {
   }
 };
 
-export default createPrompt;
+export { createPrompt };
