@@ -10,7 +10,7 @@ const updatePrompt = async () => {
   try {
     prompt = await createPrompt();
   } catch (err) {
-    prompt = err;
+    prompt = err.message;
   }
 };
 
