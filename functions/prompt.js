@@ -1,4 +1,4 @@
-import createPrompt from '../promptGenerator.js';
+import createPrompt from '../promptGenerator';
 import express from 'express';
 import cron from 'node-cron';
 import cors from 'cors';
