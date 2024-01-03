@@ -36,7 +36,6 @@ router.get("/update", async (req, res) => {
 app.use("./netlify/functions/prompt", router);
 
 export const handler = async (event, context) => {
-  await updatePrompt();
   return {
     statusCode: 200,
     body: JSON.stringify({ prompt }),
