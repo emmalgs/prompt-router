@@ -14,6 +14,8 @@ const updatePrompt = async () => {
   }
 };
 
+updatePrompt();
+
 cron.schedule('0 0 * * *', updatePrompt);
 
 const router = express.Router();
