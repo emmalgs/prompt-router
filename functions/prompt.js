@@ -1,7 +1,8 @@
-import createPrompt from '../promptGenerator.js';
+const createPrompt = require('../promptGenerator').default;
 import express from 'express';
 import cron from 'node-cron';
 import cors from 'cors';
+
 const app = express();
 
 let prompt = '';
