@@ -14,8 +14,6 @@ const updatePrompt = async () => {
   }
 };
 
-updatePrompt();
-
 cron.schedule('0 0 * * *', updatePrompt);
 
 const router = express.Router();
@@ -24,6 +22,11 @@ router.get('/', async (req, res) => {
   if (!prompt) {
     return res.status(500).send('Prompt not found');
   }
+  res.send(prompt);
+});
+
+router.get('/update', async (req, res) => {
+  await updatePrompt();
   res.send(prompt);
 });
 
