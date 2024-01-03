@@ -1,4 +1,4 @@
-import createPrompt from './promptGenerator.js';
+import createPrompt from '../promptGenerator.js';
 import express from 'express';
 import cron from 'node-cron';
 import cors from 'cors';
@@ -26,10 +26,12 @@ router.get('/', async (req, res) => {
 });
 
 app.use(cors());
-app.use(router);
+app.use('./netlify/functions/prompt', router);
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-
-updatePrompt();
+export const handler = async (event, context) => {
+  await updatePrompt();
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ prompt }),
+  };
+};
