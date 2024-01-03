@@ -5,6 +5,13 @@ import cors from 'cors';
 
 const app = express();
 
+const corsOptions = {
+  origin: 'http://localhost:5173/',
+  methods: 'GET',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
 let prompt = '';
 
 const updatePrompt = async () => {
@@ -31,7 +38,7 @@ router.get('/update', async (req, res) => {
   res.send(prompt);
 });
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use('./netlify/functions/prompt', router);
 
 export const handler = async (event, context) => {
