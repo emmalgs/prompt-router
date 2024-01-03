@@ -5,14 +5,7 @@ import cors from "cors";
 
 const app = express();
 
-const corsOptions = {
-  origin: "http://localhost:5173/",
-  methods: "GET",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 let prompt = "";
 
@@ -47,5 +40,10 @@ export const handler = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({ prompt }),
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Content-Type": "application/json"
+    },
   };
 };
