@@ -1,52 +1,42 @@
 import { createPrompt } from "../promptGenerator.js";
-import express from "express";
-import cron from "node-cron";
-import cors from "cors";
-
-const app = express();
-
-app.use(cors());
-
-let prompt = "";
 
 const updatePrompt = async () => {
+  let prompt;
   try {
     prompt = await createPrompt();
+
   } catch (err) {
     prompt = err.message;
   }
+  return prompt;
 };
 
-cron.schedule("0 0 * * *", updatePrompt);
-
-const router = express.Router();
-
-router.get("/", async (req, res) => {
-  if (prompt === "") {
-    prompt = await createPrompt();
-    res.send(prompt);
-  } else if (!prompt) {
-    res.send("Error");
-  } else {
-    res.send(prompt);
+exports.handler = async function (event, context) {
+  try {
+    const newPrompt = await updatePrompt();
+    const apiUrl = process.env.PROMPT_API_URL;
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: newPrompt }),
+    });
+    if (response.ok) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ prompt: newPrompt }),
+      };
+    } else {
+      return {
+        statusCode: response.status,
+        body: JSON.stringify({ error: response.statusText }),
+      };
+    }
+  } catch (error) {
+    return {
+      statuseCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
   }
-});
-
-router.get("/update", async (req, res) => {
-  await updatePrompt();
-  res.send(prompt);
-});
-
-app.use("./netlify/functions/prompt", router);
-
-export const handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ prompt }),
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": "true",
-      "Content-Type": "application/json"
-    },
-  };
 };
