@@ -20,12 +20,12 @@ exports.handler = async function (event, context) {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ prompt: newPrompt }),
+      body: JSON.stringify({ "promptText": newPrompt }),
     });
     if (response.ok) {
       return {
         statusCode: 200,
-        body: JSON.stringify({ prompt: newPrompt }),
+        body: JSON.stringify({ promptText: newPrompt }),
       };
     } else {
       return {
