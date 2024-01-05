@@ -11,7 +11,7 @@ const updatePrompt = async () => {
   return prompt;
 };
 
-export default async (req) => {
+exports.handler = async (event, context) => {
   try {
     const newPrompt = await updatePrompt();
     const apiUrl = process.env.PROMPT_API_URL;
@@ -42,3 +42,5 @@ export default async (req) => {
     };
   }
 };
+
+
