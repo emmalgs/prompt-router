@@ -15,12 +15,16 @@ exports.handler = async function (event, context) {
   try {
     const newPrompt = await updatePrompt();
     const apiUrl = process.env.PROMPT_API_URL;
+
+    const formData = new FormData();
+    formData.append('promptText', newPrompt);
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ promptText: newPrompt }),
+      body: formData,
     });
     if (response.ok) {
       return {
@@ -30,7 +34,7 @@ exports.handler = async function (event, context) {
     } else {
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: "WHOOPSY!!" }),
+        body: JSON.stringify({ error: error.message }),
       };
     }
   } catch (error) {
