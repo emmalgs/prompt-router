@@ -30,7 +30,7 @@ exports.handler = async function (event, context) {
     } else {
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: response.statusText }),
+        body: JSON.stringify({ error: "WHOOPSY!!" }),
       };
     }
   } catch (error) {
