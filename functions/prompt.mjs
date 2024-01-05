@@ -11,7 +11,7 @@ const updatePrompt = async () => {
   return prompt;
 };
 
-exports.handler = async function (event, context) {
+export default async (req) => {
   try {
     const newPrompt = await updatePrompt();
     const apiUrl = process.env.PROMPT_API_URL;
@@ -43,3 +43,6 @@ exports.handler = async function (event, context) {
   }
 };
 
+export const config = {
+  schedule: '@hourly'
+};
