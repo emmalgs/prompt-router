@@ -16,15 +16,12 @@ exports.handler = async function (event, context) {
     const newPrompt = await updatePrompt();
     const apiUrl = process.env.PROMPT_API_URL;
 
-    const formData = new FormData();
-    formData.append('promptText', newPrompt);
-
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: formData,
+      body: JSON.stringify({ promptText: newPrompt }),
     });
     if (response.ok) {
       return {
